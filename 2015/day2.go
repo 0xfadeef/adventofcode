@@ -36,6 +36,7 @@ func main() {
 
 	var l, w, h int
 	total := 0
+	ribbon := 0
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -47,11 +48,14 @@ func main() {
 		}
 		s1, s2, s3 := l * w, w * h, h * l
 		total += 2 * (s1 + s2 + s3) + min(s1, s2, s3)
+
+		p1, p2, p3 := l + w, w + h, h + l
+		ribbon += 2 * min(p1, p2, p3) + l * w * h
 	}
 
 	if err := scanner.Err(); err != nil {
 		fmt.Printf("error: %v\n", err)
 	} else {
-		fmt.Println(total)
+		fmt.Println(total, ribbon)
 	}
 }
