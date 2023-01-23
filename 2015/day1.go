@@ -23,6 +23,10 @@ func main() {
 	buf := make([]byte, 1024)
 	floor := 0
 
+	const basement = -1
+	basement_at := 0
+	found := false
+
 	for {
 		n, err := f.Read(buf)
 
@@ -41,8 +45,14 @@ func main() {
 			} else {
 				continue
 			}
+			if !found {
+				basement_at++
+				if floor == basement {
+					found = true
+				}
+			}
 		}
 	}
-	fmt.Println(floor)
+	fmt.Println(floor, basement_at)
 }
 
