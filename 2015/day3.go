@@ -8,6 +8,8 @@ import (
 type point struct {
 	x, y int
 }
+var origin = point{0,0}
+const with_robot = true
 
 func main() {
 	if len(os.Args) < 2 {
@@ -25,10 +27,12 @@ func main() {
 	defer f.Close()
 
 	buf := make([]byte, 1024)
-	pos := point{0,0}
+
+	var santa, robot point = origin, origin
+	var pos *point = &santa  // santa moves first
 
 	visited := make(map[point]bool)
-	visited[pos] = true
+	visited[origin] = true
 
 	for {
 		n, err := f.Read(buf)
@@ -48,8 +52,15 @@ func main() {
 			case 'v': pos.y--
 			default: continue
 			}
-			if _, ok := visited[pos]; !ok {
-				visited[pos] = true
+			if _, ok := visited[*pos]; !ok {
+				visited[*pos] = true
+			}
+			if with_robot {
+				if pos == &santa {
+					pos = &robot
+				} else {
+					pos = &santa
+				}
 			}
 		}
 	}
