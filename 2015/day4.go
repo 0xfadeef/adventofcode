@@ -19,14 +19,21 @@ func main() {
 	copy(buffer, secret)
 
 	var number uint32 = 1
+	var found5 = false
 	for {
 		data := fmt.Append(buffer, number)
 		hash := md5.Sum(data)
 		hexhash := fmt.Sprintf("%x", hash)
 
 		if hexhash[:5] == "00000" {
-			fmt.Println(number)
-			break
+			if !found5 {
+				fmt.Println(number)
+				found5 = true
+			}
+			if hexhash[5] == '0' {
+				fmt.Println(number)
+				break
+			}
 		}
 		number += 1
 	}
