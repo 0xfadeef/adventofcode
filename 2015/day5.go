@@ -40,6 +40,29 @@ func is_nice(line string) bool {
 	return vowel_count >= 3 && double_letter
 }
 
+func is_nice2(line string) bool {
+	repeat_pair := false
+	sandwich := false
+
+	pair_index := make(map[string]int)
+	last_index := len(line) - 1
+
+	for i := 0; i < last_index; i++ {
+		pair  := line[i:i+2]
+		j, ok := pair_index[pair]
+
+		if !ok {
+			pair_index[pair] = i
+		} else if i - j > 1 {
+			repeat_pair = true
+		}
+		if i < last_index-1 && line[i] == line[i+2] {
+			sandwich = true
+		}
+	}
+	return repeat_pair && sandwich
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("missing input file")
@@ -56,10 +79,13 @@ func main() {
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
-	var nice = 0
+	var nice, nice2 = 0, 0
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		if is_nice2(line) {
+			nice2++
+		}
 		if is_nice(line) {
 			nice++
 		}
@@ -67,6 +93,6 @@ func main() {
 	if err := scanner.Err(); err != nil {
 		fmt.Printf("error: %v\n", err)
 	} else {
-		fmt.Println(nice)
+		fmt.Println(nice, nice2)
 	}
 }
