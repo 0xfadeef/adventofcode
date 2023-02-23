@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+const toggle_switch = false
+
 const (
 	TURNON = iota
 	TURNOFF
@@ -31,11 +33,23 @@ func execAction(action uint, light *uint) int {
 	before := *light
 	switch action {
 	case TURNON:
-		*light = 1
+		if toggle_switch {
+			*light = 1
+		} else {
+			*light = before + 1
+		}
 	case TURNOFF:
-		*light = 0
+		if toggle_switch {
+			*light = 0
+		} else if before > 0 {
+			*light = before - 1
+		}
 	case TOGGLE:
-		*light = before ^ 1
+		if toggle_switch {
+			*light = before ^ 1
+		} else {
+			*light = before + 2
+		}
 	}
 	return int(*light - before)
 }
