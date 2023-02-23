@@ -27,6 +27,19 @@ func cutActionPrefix(s string, action *uint) (after string, ok bool) {
 	return
 }
 
+func execAction(action uint, light *uint) int {
+	before := *light
+	switch action {
+	case TURNON:
+		*light = 1
+	case TURNOFF:
+		*light = 0
+	case TOGGLE:
+		*light = before ^ 1
+	}
+	return int(*light - before)
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("missing input file")
@@ -58,17 +71,7 @@ func main() {
 
 		for x := x1; x <= x2; x++ {
 			for y := y1; y <= y2; y++ {
-				before := lights[x][y]
-
-				switch action {
-				case TURNON:
-					lights[x][y] = 1
-				case TURNOFF:
-					lights[x][y] = 0
-				case TOGGLE:
-					lights[x][y] = before ^ 1
-				}
-				count += int(lights[x][y] - before)
+				count += execAction(action, &lights[x][y])
 			}
 		}
 	}
