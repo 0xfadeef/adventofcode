@@ -14,7 +14,7 @@ const (
 )
 
 var actions = []string{TURNON: "turn on", TURNOFF: "turn off", TOGGLE: "toggle"}
-var lights [1000][1000]bool
+var lights [1000][1000]uint
 
 func cutActionPrefix(s string, action *uint) (after string, ok bool) {
 	after = s
@@ -62,19 +62,13 @@ func main() {
 
 				switch action {
 				case TURNON:
-					lights[x][y] = true
+					lights[x][y] = 1
 				case TURNOFF:
-					lights[x][y] = false
+					lights[x][y] = 0
 				case TOGGLE:
-					lights[x][y] = !before
+					lights[x][y] = before ^ 1
 				}
-				if lights[x][y] != before {
-					if before {
-						count--
-					} else {
-						count++
-					}
-				}
+				count += int(lights[x][y] - before)
 			}
 		}
 	}
