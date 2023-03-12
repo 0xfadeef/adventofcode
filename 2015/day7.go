@@ -96,6 +96,11 @@ func main() {
 		return
 	}
 	a_sig := signal("a")
-	fmt.Println(a_sig)
+
+	// clear the cache
+	cache = make(map[string]Signal)
+	cache["b"] = a_sig
+
+	fmt.Println(a_sig, signal("a"))
 }
 
