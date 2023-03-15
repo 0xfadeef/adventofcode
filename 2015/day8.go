@@ -24,7 +24,7 @@ func main() {
 	}
 	defer f.Close()
 
-	var diff = 0
+	var diff, hexed = 0, 0
 	scanner := bufio.NewScanner(f)
 
 	for scanner.Scan() {
@@ -51,7 +51,7 @@ func main() {
 			case 'x':
 				if i < size-3 && isHex(line[i+1]) && isHex(line[i+2]) {
 					i += 2
-					diff += 3
+					hexed += 1
 				} else {
 					fmt.Printf("invalid input: bad hex value")
 					return
@@ -67,7 +67,7 @@ func main() {
 	if err := scanner.Err(); err != nil {
 		fmt.Printf("error: %v\n", err)
 	} else {
-		fmt.Println(diff)
+		fmt.Println(diff + 3*hexed, 2*diff + hexed)
 	}
 }
 
