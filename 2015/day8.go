@@ -32,7 +32,7 @@ func main() {
 		size := len(line)
 
 		if size < 2 || line[0] != '"' || line[size-1] != '"' {
-			fmt.Printf("invalid input: unquoted line")
+			fmt.Println("invalid input: unquoted line")
 			return
 		}
 		diff += 2
@@ -44,7 +44,7 @@ func main() {
 				// inspect next character
 				i += 1
 			} else {
-				fmt.Printf("invalid input: closing quote is escaped")
+				fmt.Println("invalid input: closing quote is escaped")
 				return
 			}
 			switch line[i] {
@@ -53,13 +53,13 @@ func main() {
 					i += 2
 					hexed += 1
 				} else {
-					fmt.Printf("invalid input: bad hex value")
+					fmt.Println("invalid input: bad hex value")
 					return
 				}
 			case '\\', '"':
 				diff += 1
 			default:
-				fmt.Printf("invalid input: unknown escape sequence")
+				fmt.Println("invalid input: unknown escape sequence")
 				return
 			}
 		}
