@@ -17,8 +17,8 @@ var cities = make([]string, 0, 32)
 
 
 func add_city(city string) bool {
-	for n := 0; n < len(cities); n++ {
-		if cities[n] == city {
+	for _, c := range cities {
+		if c == city {
 			return false
 		}
 	}
@@ -40,9 +40,10 @@ func minmax_path_cost(start string, mask uint) (uint, uint) {
 		if mask & ptr == 0 {
 			continue
 		}
-		/* Since dummy edges are not in the distance map,
-		   city_dist will be set to 0. Luckily, that is
-		   exactly what dummy egde weight is supposed to be. */
+		/* For dummy edges city_dist will be set to 0,
+		   since they are not in the distance map.
+		   Luckily, that is exactly what dummy egde
+		   weight is supposed to be. */
 		city_dist, ok := distances[Edge{start, city}]
 
 		if !ok && start != dummy {
