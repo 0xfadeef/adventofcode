@@ -26,9 +26,10 @@ func add_city(city string) bool {
 	return true
 }
 
-func shortest_path_cost(start string, mask uint) uint {
+func minmax_path_cost(start string, mask uint) (uint, uint) {
 	var last = false
-	var mincost = ^uint(0)
+	var maxcost uint = 0
+	var mincost uint = ^maxcost
 
 	if mask & (mask - 1) == 0 {
 		last = true
@@ -49,16 +50,20 @@ func shortest_path_cost(start string, mask uint) uint {
 		}
 		if last {
 			mincost = city_dist
+			maxcost = mincost
 			break
 		}
-		cost := shortest_path_cost(city, mask &^ ptr)
-		cost += city_dist
+		locost, hicost := minmax_path_cost(city, mask &^ ptr)
+		locost += city_dist; hicost += city_dist
 
-		if cost < mincost {
-			mincost = cost
+		if locost < mincost {
+			mincost = locost
+		}
+		if hicost > maxcost {
+			maxcost = hicost
 		}
 	}
-	return mincost
+	return mincost, maxcost
 }
 
 func main() {
@@ -101,8 +106,8 @@ func main() {
 	}
 
 	mask := uint(1 << n) - 1
-	cost := shortest_path_cost(dummy, mask)
+	mincost, maxcost := minmax_path_cost(dummy, mask)
 
-	fmt.Println(cost)
+	fmt.Println(mincost, maxcost)
 }
 
