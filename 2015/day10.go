@@ -6,7 +6,8 @@ import (
 	. "github.com/0xfadeef/look_and_say_elements"
 )
 
-const repeats = 40
+const repeats1 = 40
+const repeats2 = 50
 
 type Chain []int
 
@@ -53,7 +54,10 @@ func main() {
 		return
 	}
 
-	chain = chain.evolve(repeats)
+	chain = chain.evolve(repeats1)
+	chain.print_total_length()
+
+	chain = chain.evolve(repeats2-repeats1)
 	chain.print_total_length()
 }
 
