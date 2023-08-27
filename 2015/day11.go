@@ -66,5 +66,8 @@ func main() {
 
 	for ; !is_valid(password); increment(password) {}
 	fmt.Printf("%s\n", password)
+
+	for increment(password); !is_valid(password); increment(password) {}
+	fmt.Printf("%s\n", password)
 }
 
