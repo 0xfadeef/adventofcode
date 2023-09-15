@@ -6,11 +6,18 @@ import (
 	"os"
 )
 
+const exclude_red = true
+
 type (
 	jsonArray  = []interface{}
 	jsonObject = map[string]interface{}
 	jsonNumber = float64
 )
+
+func string_value_red(v any) bool {
+	s, ok := v.(string)
+	return ok && s == "red"
+}
 
 func traverse(object any) int {
 	result := 0
@@ -22,6 +29,9 @@ func traverse(object any) int {
 		}
 	case jsonObject:
 		for _, v := range o {
+			if exclude_red && string_value_red(v) {
+				return 0
+			}
 			result += traverse(v)
 		}
 	case jsonNumber:
