@@ -144,7 +144,15 @@ func main() {
 		return
 	}
 
-	total := hamilton_cycle_max_length(len(guests), happiness)
-	fmt.Println(total)
+	n := len(guests)
+	fmt.Println(hamilton_cycle_max_length(n, happiness))
+
+	for g := range guests {
+		happiness[Pair{g, n}] = 0
+		happiness[Pair{n, g}] = 0
+	}
+
+	n++
+	fmt.Println(hamilton_cycle_max_length(n, happiness))
 }
 
