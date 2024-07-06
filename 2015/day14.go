@@ -55,5 +55,27 @@ func main() {
 		max_distance = max(max_distance, d)
 	}
 	fmt.Println(max_distance)
+
+
+	for t := 0; t < duration; t++ {
+		max_distance = 0
+		for r, state := range reindeers {
+			if t % (r.stamina + r.cooldown) < r.stamina {
+				state.distance += r.speed
+			}
+			max_distance = max(max_distance, state.distance)
+		}
+		for _, state := range reindeers {
+			if state.distance == max_distance {
+				state.points += 1
+			}
+		}
+	}
+
+	max_points := 0
+	for _, state := range reindeers {
+		max_points = max(max_points, state.points)
+	}
+	fmt.Println(max_points)
 }
 
